@@ -201,7 +201,7 @@ public class TypeUtils {
          * @return {@code this} instance.
          */
         public WildcardTypeBuilder withLowerBounds(final Type... bounds) {
-            this.lowerBounds = bounds;
+            this.lowerBounds = bounds != null ? bounds.clone() : null;
             return this;
         }
 
@@ -212,7 +212,7 @@ public class TypeUtils {
          * @return {@code this} instance.
          */
         public WildcardTypeBuilder withUpperBounds(final Type... bounds) {
-            this.upperBounds = bounds;
+            this.upperBounds = bounds != null ? bounds.clone() : null;
             return this;
         }
     }
