@@ -353,7 +353,7 @@ public class MultiBackgroundInitializer extends BackgroundInitializer<MultiBackg
      * @since 3.14.0
      */
     @Override
-    public boolean isInitialized() {
+    public synchronized boolean isInitialized() {
         if (childInitializers.isEmpty()) {
             return false;
         }
