@@ -2336,4 +2336,17 @@ class TypeUtilsTest<B> extends AbstractLangTest {
         assertEquals(String.class, TypeUtils.wrap(String.class).getType());
     }
 
+    @Test
+    void testWildcardTypeBuilderCopiesBounds() {
+        final Type[] lower = { Integer.class };
+        final Type[] upper = { Number.class };
+        final TypeUtils.WildcardTypeBuilder builder = TypeUtils.wildcardType().withLowerBounds(lower).withUpperBounds(upper);
+        // Changing the caller's arrays after the with*() calls must not affect the built type.
+        lower[0] = String.class;
+        upper[0] = Object.class;
+        final WildcardType wildcardType = builder.build();
+        assertArrayEquals(new Type[] { Integer.class }, wildcardType.getLowerBounds());
+        assertArrayEquals(new Type[] { Number.class }, wildcardType.getUpperBounds());
+    }
+
 }
