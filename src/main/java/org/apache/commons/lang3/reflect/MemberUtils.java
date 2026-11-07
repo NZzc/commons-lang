@@ -201,7 +201,7 @@ final class MemberUtils {
         final boolean isVarArgs = executable.isVarArgs();
         // "source" and "destination" are the actual and declared args respectively.
         float totalCost = 0.0f;
-        final long normalArgsLen = isVarArgs ? destArgs.length - 1 : destArgs.length;
+        final int normalArgsLen = isVarArgs ? destArgs.length - 1 : destArgs.length;
         if (srcArgs.length < normalArgsLen) {
             return Float.MAX_VALUE;
         }
