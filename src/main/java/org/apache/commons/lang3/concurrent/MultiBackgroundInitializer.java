@@ -16,8 +16,10 @@
  */
 package org.apache.commons.lang3.concurrent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -353,10 +355,16 @@ public class MultiBackgroundInitializer extends BackgroundInitializer<MultiBackg
      * @since 3.14.0
      */
     @Override
-    public synchronized boolean isInitialized() {
-        if (childInitializers.isEmpty()) {
+    public boolean isInitialized() {
+        // Copy the children while holding this instance's lock, which addInitializer() also uses,
+        // then query them without holding it to avoid lock-ordering deadlocks with the children.
+        final List<BackgroundInitializer<?>> children;
+        synchronized (this) {
+            children = new ArrayList<>(childInitializers.values());
+        }
+        if (children.isEmpty()) {
             return false;
         }
-        return childInitializers.values().stream().allMatch(BackgroundInitializer::isInitialized);
+        return children.stream().allMatch(BackgroundInitializer::isInitialized);
     }
 }
